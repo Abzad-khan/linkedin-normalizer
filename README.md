@@ -1,179 +1,130 @@
-# LinkedIn Voyager Profile Normalizer
+# LinkedIn Profile Normalizer
 
-A lightweight Python utility that transforms messy, inconsistently shaped
-**LinkedIn Voyager-style JSON payloads** into a single clean canonical profile
-object — no external dependencies required.
+This project processes LinkedIn-style profile JSON data and converts it into a clean, structured format.
 
 ---
 
-## Project Structure
+## 🧰 Requirements
+
+- Python 3 installed  
+
+Check Python version:
+
+```bash
+python --version
+```
+
+---
+
+## 📥 Setup
+
+### Option 1: Clone from GitHub
+
+```bash
+git clone https://github.com/Abzad-khan/linkedin-normalizer.git
+cd linkedin-normalizer
+```
+
+### Option 2: Download ZIP
+
+1. Download ZIP from GitHub  
+2. Extract it  
+3. Open terminal inside the folder  
+
+---
+
+## 📂 Project Structure
 
 ```
 linkedin_normalizer/
-├── normalizer.py          # Core normalization logic
-├── tests/
-│   └── test_normalizer.py # Full pytest test suite
-└── README.md
+├── normalizer.py
+├── run_all.py
+├── candidate_pack/
+│   ├── fixtures/
+│   │   ├── profile_1.json
+│   │   ├── profile_2.json
+│   │   └── profile_3.json
 ```
 
 ---
 
-## What It Does
+## 🚀 How to Run
 
-LinkedIn's internal Voyager API returns profile data in many shapes depending
-on the endpoint, API version, and fields requested. This utility handles:
-
-| Variant | Example |
-|---|---|
-| Nested Voyager (`positionView`, `educationView`, `skillView`) | Standard `/identity/profiles/{id}` response |
-| Flat / simplified shape | Lightweight or third-party scraped payloads |
-| `profile`-wrapped payloads | Responses where data is nested under a `profile` key |
-| Mixed / partial payloads | Profiles missing optional fields |
-
-### Canonical Output Shape
-
-```python
-{
-    "id": "ACoAAABjK9oBSample",        # extracted from URN or id field
-    "name": {
-        "first": "Jane",
-        "last": "Doe",
-        "full": "Jane Doe"
-    },
-    "headline": "Senior Software Engineer @ Acme Corp",
-    "summary": "Passionate about scalable systems.",
-    "location": {
-        "city": "San Francisco",
-        "country": "US",
-        "full": "San Francisco, California"
-    },
-    "profile_url": "https://www.linkedin.com/in/janedoe",
-    "photo_url": "https://media.licdn.com/dms/image/sample.jpg",
-    "connections": 523,
-    "followers": 1200,
-    "experience": [
-        {
-            "title": "Senior Software Engineer",
-            "company": "Acme Corp",
-            "start": {"year": 2021, "month": 3},
-            "end": None,
-            "current": True,
-            "description": "Led backend team."
-        }
-    ],
-    "education": [
-        {
-            "school": "MIT",
-            "degree": "B.S.",
-            "field": "Computer Science",
-            "start_year": 2014,
-            "end_year": 2018
-        }
-    ],
-    "skills": ["Python", "Distributed Systems", "Kubernetes"],
-    "contact": {
-        "email": "jane@example.com",
-        "phone": "+1-415-555-0100",
-        "twitter": "janedoe_dev",
-        "websites": ["https://janedoe.dev"]
-    }
-}
-```
-
----
-
-## Requirements
-
-- **Python 3.8+**
-- No third-party packages needed for the core utility
-- `pytest` for running tests
-
----
-
-## Installation
+### Step 1: Open terminal in project folder
 
 ```bash
-# Clone or copy the project folder
 cd linkedin_normalizer
-
-# (Optional) create a virtual environment
-python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
-
-# Install pytest (only needed for tests)
-pip install pytest
 ```
 
----
-
-## Usage
-
-```python
-from normalizer import normalize_profile
-
-raw_payload = {
-    "entityUrn": "urn:li:fs_profile:ACoAAExample",
-    "firstName": "Jane",
-    "lastName": "Doe",
-    "headline": "Engineer @ Acme",
-    # ... rest of Voyager payload
-}
-
-profile = normalize_profile(raw_payload)
-print(profile["name"]["full"])   # Jane Doe
-print(profile["headline"])       # Engineer @ Acme
-```
-
-### Error Handling
-
-```python
-try:
-    profile = normalize_profile(raw)
-except TypeError as e:
-    print(f"Invalid input: {e}")
-```
-
----
-
-## Running Tests
-
-From the **project root** (`linkedin_normalizer/`):
+### Step 2: Run script
 
 ```bash
-# Run all tests with verbose output
-pytest tests/test_normalizer.py -v
-
-# Run a specific test class
-pytest tests/test_normalizer.py::TestExperience -v
-
-# Run with coverage (requires pytest-cov)
-pip install pytest-cov
-pytest tests/test_normalizer.py --cov=normalizer --cov-report=term-missing
-```
-
-### Expected Output
-
-```
-tests/test_normalizer.py::TestNormalizeProfile::test_returns_dict          PASSED
-tests/test_normalizer.py::TestNormalizeProfile::test_raises_on_non_dict    PASSED
-...
-============= 45 passed in 0.12s =============
+python run_all.py
 ```
 
 ---
 
-## Key Design Decisions
+## ✅ Expected Output
 
-- **Zero dependencies** — uses only the Python standard library (`re`, `typing`)
-- **Defensive fallbacks** — every field gracefully handles `None`, missing keys, and unexpected types
-- **URL sanitisation** — strips tracking query params, normalises HTTP→HTTPS, removes trailing slashes
-- **Deduplication** — skills list is deduplicated while preserving insertion order
-- **URN parsing** — extracts the canonical ID from LinkedIn URN strings automatically
+You should see:
+
+```
+🚀 RUNNING ALL FILES...
+
+📄 Processing: profile_1.json
+✅ PASS
+
+📄 Processing: profile_2.json
+✅ PASS
+
+📄 Processing: profile_3.json
+✅ PASS
+
+📊 FINAL RESULT
+TOTAL FILES: 3
+PASSED: 3
+FAILED: 0
+
+🎉 ALL FILES PASSED SUCCESSFULLY!
+```
 
 ---
 
-## Extending
+## ❗ Troubleshooting
 
-To add support for a new payload field, add a `_normalize_*` helper in
-`normalizer.py` and include its output in the `normalize_profile` return dict.
-Follow the existing pattern: accept `raw: dict`, return a clean value.
+### If python command not working
+
+```bash
+python3 run_all.py
+```
+
+---
+
+### If file not found error
+
+Make sure this folder exists:
+
+```
+candidate_pack/fixtures/
+```
+
+---
+
+### If module error occurs
+
+Ensure both files are in the same folder:
+
+```
+normalizer.py
+run_all.py
+```
+
+---
+
+## 📌 What This Project Does
+
+- Reads all JSON profiles from candidate_pack/fixtures
+- Normalizes them using normalizer.py
+- Cleans and standardizes the data
+- Validates output
+- Displays pass/fail results

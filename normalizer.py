@@ -1,68 +1,42 @@
 import re
 
 
-# -------------------- HELPERS --------------------
+def normalize_profile(data):
+    def clean(x):
+        return re.sub(r"\s+", " ", str(x or "")).strip()
 
-def clean(text):
-    """Convert to string, remove extra spaces"""
-    return re.sub(r"\s+", " ", str(text or "")).strip()
+    # ---------- PUBLIC ID ----------
+    public_id = clean(data.get("public_identifier"))
 
+    # ---------- LINKEDIN URL ----------
+    linkedin_url = data.get("linkedin_url")
+    if linkedin_url:
+        linkedin_url = clean(linkedin_url)
+    else:
+        linkedin_url = f"https://www.linkedin.com/in/{public_id}/"
 
-def build_linkedin_url(public_id, existing_url):
-    """Preserve or build LinkedIn URL"""
-    if existing_url:
-        return clean(existing_url)
-    return f"https://www.linkedin.com/in/{clean(public_id)}"
-
-
-def extract_name(first, last, full):
-    """Ensure first, last, full are consistent"""
-    full = clean(full)
+    # ---------- NAME ----------
+    full = clean(data.get("full_name"))
 
     if full:
         parts = full.split(" ", 1)
-        first = clean(parts[0])
-        last = clean(parts[1]) if len(parts) > 1 else ""
+        first = parts[0]
+        last = parts[1] if len(parts) > 1 else ""
     else:
-        first = clean(first)
-        last = clean(last)
+        first = clean(data.get("first_name"))
+        last = clean(data.get("last_name"))
         full = f"{first} {last}".strip()
 
-    return first, last, full
-
-
-def get_current_position(positions):
-    """Find current role (end = None)"""
-    for p in positions:
-        if p.get("date_range", {}).get("end") is None:
-            return p
-    return positions[0] if positions else {}
-
-
-# -------------------- MAIN NORMALIZER --------------------
-
-def normalize_profile(data):
-    if not isinstance(data, dict):
-        raise TypeError("Input must be a dictionary")
-
-    # ---------- NAME ----------
-    first_name, last_name, full_name = extract_name(
-        data.get("first_name"),
-        data.get("last_name"),
-        data.get("full_name"),
-    )
-
-    # ---------- LINKEDIN URL ----------
-    linkedin_url = build_linkedin_url(
-        data.get("public_identifier"),
-        data.get("linkedin_url"),
-    )
+    # ---------- BASIC FIELDS ----------
+    headline = clean(data.get("headline"))
+    summary = clean(data.get("summary"))
+    location = clean(data.get("location_name"))
 
     # ---------- POSITIONS ----------
-    raw_positions = data.get("positions") or []
-    clean_positions = []
+    positions = data.get("positions") or []
 
-    for p in raw_positions:
+    clean_positions = []
+    for p in positions:
         clean_positions.append({
             "title": clean(p.get("title")),
             "company_name": clean(p.get("company_name")),
@@ -70,16 +44,23 @@ def normalize_profile(data):
         })
 
     # ---------- CURRENT ROLE ----------
-    current = get_current_position(raw_positions)
+    current = {}
+    for p in positions:
+        if p.get("date_range", {}).get("end") is None:
+            current = p
+            break
 
-    current_role_title = clean(current.get("title"))
-    company_name = clean(current.get("company_name"))
+    if not current and positions:
+        current = positions[0]
+
+    current_title = clean(current.get("title"))
+    current_company = clean(current.get("company_name"))
 
     # ---------- EDUCATIONS ----------
-    raw_educations = data.get("educations") or []
-    clean_educations = []
+    educations = data.get("educations") or []
 
-    for e in raw_educations:
+    clean_educations = []
+    for e in educations:
         clean_educations.append({
             "school_name": clean(e.get("school_name")),
             "degree_name": clean(e.get("degree_name")),
@@ -87,19 +68,34 @@ def normalize_profile(data):
         })
 
     # ---------- PROFILE TEXT ----------
-    headline = clean(data.get("headline"))
-    summary = clean(data.get("summary"))
+    profile_parts = []
 
-    profile_text = f"{headline} {summary}".strip().lower()
+    if headline:
+        profile_parts.append(headline)
+
+    if location:
+        profile_parts.append(location)
+
+    for p in clean_positions:
+        if p["title"]:
+            profile_parts.append(p["title"])
+        if p["company_name"]:
+            profile_parts.append(p["company_name"])
+
+    profile_text = " ".join(profile_parts).lower()
 
     # ---------- FINAL OUTPUT ----------
     return {
+        "public_identifier": public_id,
         "linkedin_url": linkedin_url,
-        "first_name": first_name,
-        "last_name": last_name,
-        "full_name": full_name,
-        "current_role_title": current_role_title,
-        "company_name": company_name,
+        "first_name": first,
+        "last_name": last,
+        "full_name": full,
+        "headline": headline,
+        "current_role_title": current_title,
+        "company_name": current_company,
+        "location_name": location,
+        "summary": summary,
         "positions": clean_positions,
         "educations": clean_educations,
         "profile_text": profile_text,
