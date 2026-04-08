@@ -1,0 +1,42 @@
+{
+  "public_identifier": " alice-smith ",
+  "first_name": " Alice ",
+  "last_name": " Smith ",
+  "full_name": null,
+  "headline": " VP   Growth  ",
+  "summary": null,
+  "location_name": " New York,  NY ",
+  "positions": [
+    {
+      "title": " VP Growth ",
+      "company_name": " Acme ",
+      "location": " New York ",
+      "date_range": {
+        "start": {
+          "year": 2024
+        },
+        "end": null
+      }
+    },
+    {
+      "title": " Head of Demand Gen ",
+      "company_name": " OldCo ",
+      "location": null,
+      "date_range": {
+        "start": {
+          "year": 2021
+        },
+        "end": {
+          "year": 2023
+        }
+      }
+    }
+  ],
+  "educations": [
+    {
+      "school_name": " Wharton ",
+      "degree_name": null,
+      "field_of_study": " Marketing "
+    }
+  ]
+}

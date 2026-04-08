@@ -1,0 +1,42 @@
+{
+  "public_identifier": "raj-patel-123",
+  "first_name": null,
+  "last_name": null,
+  "full_name": " Raj   Patel ",
+  "headline": null,
+  "summary": " Builds   outbound systems for B2B SaaS. ",
+  "location_name": " Remote, India ",
+  "positions": [
+    {
+      "title": null,
+      "company_name": " SignalBox ",
+      "location": " Remote ",
+      "date_range": {
+        "start": {
+          "year": 2024
+        },
+        "end": null
+      }
+    },
+    {
+      "title": " Engineer ",
+      "company_name": " OldCo ",
+      "location": " Pune ",
+      "date_range": {
+        "start": {
+          "year": 2022
+        },
+        "end": {
+          "year": 2023
+        }
+      }
+    }
+  ],
+  "educations": [
+    {
+      "school_name": " IIT Delhi ",
+      "degree_name": null,
+      "field_of_study": " Computer Science "
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+Sharing the public candidate pack for the LinkedIn Voyager Profile Normalizer task.
+
+Included:
+- 3 representative public input fixtures
+- the exact expected output contract
+- a public deliverable checklist
+- a sample normalized output for one public fixture
+
+Please note:
+- these are public examples only
+- final evaluation may include additional hidden cases
+- hidden cases follow the same output contract and normalization rules

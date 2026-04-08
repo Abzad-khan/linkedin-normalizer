@@ -1,0 +1,43 @@
+{
+  "public_identifier": " maria-garcia-77 ",
+  "linkedin_url": "https://www.linkedin.com/in/maria-garcia-77/",
+  "first_name": "",
+  "last_name": "",
+  "full_name": " Maria   Garcia ",
+  "headline": " Founder   | GTM ",
+  "summary": null,
+  "location_name": " Madrid, Spain ",
+  "positions": [
+    {
+      "title": " Consultant ",
+      "company_name": " Freelance ",
+      "location": " Madrid ",
+      "date_range": {
+        "start": {
+          "year": 2022
+        },
+        "end": {
+          "year": 2023
+        }
+      }
+    },
+    {
+      "title": " Founder ",
+      "company_name": " Martian Crown ",
+      "location": " Madrid ",
+      "date_range": {
+        "start": {
+          "year": 2024
+        },
+        "end": null
+      }
+    }
+  ],
+  "educations": [
+    {
+      "school_name": " IE University ",
+      "degree_name": " MBA ",
+      "field_of_study": null
+    }
+  ]
+}

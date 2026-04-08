@@ -1,0 +1,32 @@
+{
+  "public_identifier": "alice-smith",
+  "linkedin_url": "https://www.linkedin.com/in/alice-smith/",
+  "first_name": "Alice",
+  "last_name": "Smith",
+  "full_name": "Alice Smith",
+  "headline": "VP Growth",
+  "current_role_title": "VP Growth",
+  "company_name": "Acme",
+  "location_name": "New York, NY",
+  "summary": "",
+  "positions": [
+    {
+      "title": "VP Growth",
+      "company_name": "Acme",
+      "location": "New York"
+    },
+    {
+      "title": "Head of Demand Gen",
+      "company_name": "OldCo",
+      "location": ""
+    }
+  ],
+  "educations": [
+    {
+      "school_name": "Wharton",
+      "degree_name": "",
+      "field_of_study": "Marketing"
+    }
+  ],
+  "profile_text": "vp growth new york, ny vp growth acme new york head of demand gen oldco wharton marketing"
+}
